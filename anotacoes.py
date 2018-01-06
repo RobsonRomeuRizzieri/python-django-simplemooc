@@ -218,8 +218,7 @@ heroku run python manage.py shell
 #heroku aplicando arquivos estáticos 
 heroku config:set DISABLE_COLLECTSTATIC=1
 
-
-
+#**********************************Eletrônica*************************
 wms = mjr2016abc
 acessar 
 ssh pi@raspberrypi or pi@192.168.0.24
