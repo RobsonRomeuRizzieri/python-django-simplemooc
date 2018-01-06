@@ -168,7 +168,7 @@ ALLOWED_HOSTS = ['*']
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
-#Forma simples é removendo essa tag para deploy no heroku
+#Forma simples é removendo essa tag para deploy no heroku é removendo ela com comentário
 #STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, 'static'),
 #)
