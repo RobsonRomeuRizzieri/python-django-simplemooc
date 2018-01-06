@@ -217,6 +217,7 @@ heroku run python manage.py shell
 #**************************
 #heroku aplicando arquivos estáticos 
 heroku config:set DISABLE_COLLECTSTATIC=1
+heroku config:set DEBUG_COLLECTSTATIC=1
 
 #**********************************Eletrônica*************************
 wms = mjr2016abc
