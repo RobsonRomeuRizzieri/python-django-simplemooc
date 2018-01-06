@@ -169,9 +169,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 #Forma simples é removendo essa tag para deploy no heroku é removendo ela com comentário
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, 'static'),
+#)
 try:
     from simplemooc.local_settings import *
 except ImportError:

@@ -222,7 +222,6 @@ heroku config:set DEBUG_COLLECTSTATIC=1
 heroku run python manage.py collectstatic --noinput
 #*********************************
 
-
 #**********************************Eletrônica*************************
 wms = mjr2016abc
 acessar 
