@@ -216,8 +216,12 @@ heroku run python manage.py shell
 
 #**************************
 #heroku aplicando arquivos estáticos 
-heroku config:set DISABLE_COLLECTSTATIC=1
+heroku config:set DISABLE_COLLECTSTATIC=0
 heroku config:set DEBUG_COLLECTSTATIC=1
+#executr o comando para compilar os arquivos
+heroku run python manage.py collectstatic --noinput
+#*********************************
+
 
 #**********************************Eletrônica*************************
 wms = mjr2016abc
