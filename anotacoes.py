@@ -202,6 +202,11 @@ Enviar o que foi commitado para o servidor
 Nesse caso estamos enviado para o servidor os commits do ramo principal o master
 git push heroku master
 
+pulicado no endereço 
+https://salty-reaches-43224.herokuapp.com/
+renomeada a aplicação para simplemooc-robson
+agora acessa a aplicação usando
+https://simplemooc-robson.herokuapp.com/
 
 
 wms = mjr2016abc
