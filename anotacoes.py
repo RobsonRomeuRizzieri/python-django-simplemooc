@@ -188,16 +188,16 @@ git commit -m "texto desejado para representar o commit"
 #Comando para remover arquivo do git
 git rm db.sqlite3 -f
 
-************
-Depois de feito isso podemos criar o projeto no heroku
+#************
+#Depois de feito isso podemos criar o projeto no heroku
 heroku create
-************
+#************
 
-Permite verificar o nome do servidor e caminho para o mesmo no servidor
+#Permite verificar o nome do servidor e caminho para o mesmo no servidor
 git remote -v
 
-Enviar o que foi commitado para o servidor
-Nesse caso estamos enviado para o servidor os commits do ramo principal o master
+#Enviar o que foi commitado para o servidor
+#Nesse caso estamos enviado para o servidor os commits do ramo principal o master
 git push heroku master
 
 pulicado no endereço 
@@ -213,6 +213,9 @@ heroku run python manage.py createsuperuser
 
 permite testar a aplicação em tempo de execução
 heroku run python manage.py shell
+
+#**************************
+#heroku aplicando arquivos estáticos 
 
 wms = mjr2016abc
 acessar 
