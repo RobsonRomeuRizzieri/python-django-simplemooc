@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+#Colocado tambm no local_settings.py
 import os
-
 #recebe a base do diretorio do projeto
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,10 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ')iqji%@=@)2@-fh)^3^!6h5kvuee*vn6zg+nk$ye0ge3k-d+o%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+TEMPLATE_DEBUG = False
 
+#ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -79,6 +80,7 @@ WSGI_APPLICATION = 'simplemooc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 #conexão com banco de dados
+# Removido daqui e colocado no local_settings.py
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -168,3 +170,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+try:
+    from simplemooc.local_settings import *
+except ImportError:
+    pass

@@ -154,11 +154,11 @@ pip install django-toolbelt
 dois arquivos devem ser criados onde está o manage.py
 Procfile e runtime.txt
 
-executar
-* pip freeze > requirements.txt
-vai criar o arquivo requirements.txt vai colocar todas a bibliotecas do projeto nesse arquivo
+#executar
+pip freeze > requirements.txt
+#vai criar o arquivo requirements.txt vai colocar todas a bibliotecas do projeto nesse arquivo
 
-alterar o arquivo settings.py para usar as configurações do heroku
+#alterar o arquivo settings.py para usar as configurações do heroku
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
 
@@ -171,24 +171,22 @@ from dj_static import Cling
 #application = get_wsgi_application()
 application = Cling(get_wsgi_application())
 
-Inicirar o GIT no projeto
-* git init
-
-Adicionar arquivos ao gitignore
+#Inicirar o GIT no projeto
+git init
+#Adicionar arquivos ao gitignore
 touch .gitignore
-adicionar os seguintes valores no arquivo
+#adicionar os seguintes valores no arquivo
 *.pyc
 staticfiles
-
-Comando git para adicionar os arquivos 
-o ponto representada que é para adicionar todos os arquivos ao commit
+#Comando git para adicionar os arquivos 
+#o ponto representada que é para adicionar todos os arquivos ao commit
 git add .
-
-Comoando para listar o status do arquivos adicionados
+#Comoando para listar o status do arquivos adicionados
 git status
-
-Comitar os arquivos adicionado ao commit com o comando git add
+#Comitar os arquivos adicionado ao commit com o comando git add
 git commit -m "texto desejado para representar o commit"
+#Comando para remover arquivo do git
+git rm db.sqlite3 -f
 
 ************
 Depois de feito isso podemos criar o projeto no heroku
@@ -208,6 +206,13 @@ renomeada a aplicação para simplemooc-robson
 agora acessa a aplicação usando
 https://simplemooc-robson.herokuapp.com/
 
+executar atualização do banco dedados no heroku
+heroku run python manage.py makemigrations
+heroku run python manage.py migrate
+heroku run python manage.py createsuperuser
+
+permite testar a aplicação em tempo de execução
+heroku run python manage.py shell
 
 wms = mjr2016abc
 acessar 
