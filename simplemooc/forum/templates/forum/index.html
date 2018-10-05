@@ -7,7 +7,6 @@
             <li><a href="{% url 'core:home' %}">Início</a></li>
             <li>/</li>
             <li><a href="{% url 'forum:index' %}">Fórum de discussões</a></li>
-
         </ul>
     </div>
     <div class="pure-u-1-3">
@@ -17,19 +16,19 @@
                     Tópicos do fórum
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="?order=recent">
                         <i class="fa fa-refresh"></i>
                         Mais recentes
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="?order=views">
                         <i class="fa fa-eye"></i>
                         Mais vizualizados
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="?order=comments">
                         <i class="fa fa-comments-o"></i>
                         Mais Comentados
                     </a>
@@ -37,7 +36,7 @@
                 <li class="pure-menu-heading">Tag</li>
                 <li>
                     {% for tag in tags %}
-                    <a href="#" class="tags" style="float:left">
+                    <a href="{% url 'forum:index_tagged' tag.slug %}" class="tags" style="float:left">
                         <i class="fa fa-tag"></i>
                         {{ tag }}
                     </a>
@@ -51,7 +50,7 @@
             {% for thread in object_list %}
             <div class="well">
                 <h3>
-                    <a href="">{{ thread.title}}</a>
+                    <a href="{{ thread.get_absolute_url }}">{{ thread.title}}</a>
                 </h3>
                 <h5>
                     Criado por {{ thread.author }} | {{ thread.answers }} resposta{{ thread.answers|pluralize }}  | {{ thread.views }} Visualizaç{{ thread.views|pluralize:"ão,ões" }}
@@ -60,27 +59,27 @@
                     <i class="fa fa-tags"></i>
                     Tags:
                     {% for tag in thread.tags.all %}                    
-                    <a href="">{{ tag }}</a>
+                    <a href="{% url 'forum:index_tagged' tag.slug %}">{{ tag }}</a>
                         {% if not forloop.last %},{% endif %}
                     {% endfor %}
-                    <a href="" class="fright" style="float:right">Atualizado a {{ thread.modified|timesince }} atrás</a>
+                    <a href="{{ thread.get_absolute_url }}" class="fright" style="float:right">Atualizado a {{ thread.modified|timesince }} atrás</a>
                 </p>
             </div>
             {% endfor %}
             <ul class="pagination pagination-centered">
                 {% if page_obj.has_previous %}
                     <li>
-                        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">Anterior</a>
                     </li>
                 {% endif %}
                 {% for page in paginator.page_range %}
                     <li {% if page == page_obj.number %} class="active"{% endif %}>
-                        <a href="?page={{ page }}">{{ page }}</a>
+                        <a href="?page={{ page }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">{{ page }}</a>
                     </li>
                 {% endfor %}
                 {% if page_obj.has_next %}
                     <li>
-                        <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">Próxima</a>
                     </li>
                 {% endif %}                
             </ul>

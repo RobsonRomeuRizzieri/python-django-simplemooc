@@ -50,6 +50,12 @@ INSTALLED_APPS = [
     'simplemooc.courses',
     'simplemooc.forum',
 ]
+#Precisa ser adicionado para ter o request disponivel no template
+#Parce que django 2.0+ essa funcionalidade já vem por padrão
+#from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+#TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+#    'djangp.core.context_processors.request',
+#)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,8 +1,12 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, View, ListView
+import json
 
-from .models import Thread
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import TemplateView, View, ListView, DetailView
+from django.contrib import messages
+from django.http import HttpResponse
 
+from .models import Thread, Reply
+from .forms import ReplyForm
 #Apartir de TemplateView
 #class ForumView(TemplateView):
     
@@ -17,10 +21,24 @@ from .models import Thread
 #apartir de ListView
 class ForumView(ListView):
 
-    model = Thread
+    #Em vez de usar o model vamos criar a queryset
+    #model = Thread
     paginate_by = 2
     template_name = 'forum/index.html'
  
+    def get_queryset(self):
+        queryset = Thread.objects.all()
+        #Se não existir determina o valor vazio para a variavel order
+        order = self.request.GET.get('order', '')
+        if order == 'views':
+            queryset = queryset.order_by('-views')
+        elif order == 'comments':
+            queryset = queryset.order_by('-answers')
+        tag = self.kwargs.get('tag', '')
+        if tag:
+            queryset = queryset.filter(tags__slug__icontains=tag)
+        return queryset
+
     def get_context_data(self, **kwargs):
         #Chama a base do método
         context = super(ForumView, self).get_context_data(**kwargs)
@@ -28,7 +46,64 @@ class ForumView(ListView):
         context['tags'] = Thread.tags.all() 
         return context
 
+class ThreadView(DetailView):
+
+    model = Thread
+    template_name = 'forum/thread.html'
+
+    def get(self, request, *args, **kwargs):
+        response = super(ThreadView, self).get(request, *args, **kwargs)
+        if not self.request.user.is_authenticated or \
+            (self.object.author != self.request.user):
+            self.object.views = self.object.views + 1
+            self.object.save()
+        return response
+
+    def get_context_data(self, **kwargs):
+        context = super(ThreadView, self).get_context_data(**kwargs)
+        #Relaciona todas as tags ao tópico
+        context['tags'] = Thread.tags.all()   
+        context['form'] = ReplyForm(self.request.POST or None)      
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            messages.error(self.request, 'Para responder ao tópico é necessário estar logado')
+            return redirect(self.request.path)
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        form = context['form']
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.thread = self.object
+            reply.author = self.request.user
+            reply.save()
+            messages.success(self.request, 'A sua resposta foi enviada com sucesso')
+            #Limpando o forumlário
+            context['form'] = ReplyForm()
+        #Já tem têm template name e o request no self.request então é só retornar o context
+        return self.render_to_response(context)
+        
+class ReplyCorrectView(View):
+    
+    correct = True
+
+    def get(self, request, pk):
+        reply = get_object_or_404(Reply, pk=pk, thread__author=request.user)
+        reply.correct = self.correct
+        reply.save()
+        message = 'resposta atualizada com sucesso'
+        if request.is_ajax():
+            data = {'success': True, 'message': message}
+            return HttpResponse(json.dumps(data), content_type='application/json')
+        else:
+            messages.success(request, message)
+            return redirect(reply.thread.get_absolute_url())
+
 index = ForumView.as_view()
+thread = ThreadView.as_view()
+reply_correct = ReplyCorrectView.as_view()
+reply_incorrect = ReplyCorrectView.as_view(correct=False)
 
 #poderia também ter feito dessa forma em vez de criar a class
 #index = TemplateView.as_wiew(template_name='forum/index.html')
